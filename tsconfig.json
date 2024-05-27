@@ -1,0 +1,24 @@
+{
+  "extends": "@tsconfig/node20/tsconfig.json",
+  "exclude": [
+    "packages"
+  ],
+  "compilerOptions": {
+    "module": "esnext",
+    "moduleResolution": "node",
+    "paths": {
+      "@luna/core/": [
+        "../core/src/"
+      ],
+      "@luna/api/*": [
+        "../api/src/*"
+      ],
+      "@luna/web": [
+        "../web/src/"
+      ],
+      "@luna/functions/*": [
+        "../functions/src/*"
+      ],
+    },
+  },
+}

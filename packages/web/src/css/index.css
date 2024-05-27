@@ -1,0 +1,32 @@
+/* vars */
+:root {
+  --navbar-width: 250px;
+  --sidebar-width: 350px;
+  --footer-height: 28px;
+  --padding: 12px;
+  --transition-duration: 0s;
+}
+
+/* Base styles */
+html,
+body {
+  height: 100vh;
+  margin: 0;
+  padding: 0;
+  overflow-x: hidden;
+}
+
+.content {
+  overflow-y: auto;
+  height: calc(100vh - var(--footer-height));
+  padding-top: var(--padding);
+  padding-bottom: var(--padding);
+}
+
+/* Footer */
+.footer {
+  width: 100%;
+  position: fixed;
+  bottom: 0;
+  height: var(--footer-height);
+}

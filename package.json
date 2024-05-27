@@ -1,0 +1,32 @@
+{
+  "name": "luna",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev:backend": "sst dev",
+    "dev:frontend": "npm run dev -w web",
+    "dev": "concurrently \"npm run dev:backend\" \"npm run dev:frontend\"",
+    "build": "sst build",
+    "deploy": "sst deploy",
+    "remove": "sst remove",
+    "console": "sst console",
+    "typecheck": "tsc --noEmit"
+  },
+  "devDependencies": {
+    "@tsconfig/node20": "20.1.4",
+    "aws-cdk-lib": "2.124.0",
+    "concurrently": "8.2.2",
+    "constructs": "10.3.0",
+    "sst": "2.40.6",
+    "typescript": "5.4.2"
+  },
+  "workspaces": [
+    "packages/api",
+    "packages/core",
+    "packages/web"
+  ],
+  "dependencies": {
+    "prettier": "3.2.5"
+  }
+}

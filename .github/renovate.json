@@ -1,0 +1,46 @@
+{
+  "extends": ["config:best-practices", "schedule:nonOfficeHours", ":semanticCommitTypeAll(chore)"],
+  "labels": ["dependencies", "renovate"],
+  "packageRules": [
+    {
+      "allowedVersions": "<=20",
+      "automerge": true,
+      "automergeType": "pr",
+      "groupName": "nodetypes",
+      "matchPackageNames": ["@types/node"]
+    },
+    {
+      "automerge": true,
+      "automergeType": "pr",
+      "groupName": "aws-sdk-v3",
+      "matchPackagePatterns": ["^@aws-sdk"],
+      "schedule": ["on the 3rd day instance on Sunday"]
+    },
+    {
+      "automerge": true,
+      "automergeType": "pr",
+      "groupName": "tzdata",
+      "matchPackagePatterns": ["^tzdata"],
+      "schedule": ["after 2am and before 5am"]
+    },
+    {
+      "automerge": true,
+      "automergeType": "pr",
+      "groupName": "types",
+      "matchPackagePatterns": ["@types/"],
+      "schedule": ["after 2am and before 5am"]
+    },
+    {
+      "automerge": true,
+      "automergeType": "pr",
+      "matchDepTypes": ["action", "dependencies", "devDependencies"]
+    }
+  ],
+  "rebaseWhen": "behind-base-branch",
+  "semanticCommits": "enabled",
+  "timezone": "Europe/Berlin",
+  "updateNotScheduled": false,
+  "vulnerabilityAlerts": {
+    "labels": ["security"]
+  }
+}
