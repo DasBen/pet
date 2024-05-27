@@ -1,13 +1,13 @@
 import React from 'react'
 import {Card, Col, Row} from 'react-bootstrap'
-import {Profile} from '../interfaces/profile'
+import {Animal} from '../interfaces/animal'
 import ProfileShortCard from './profileShortCard'
 
 interface PedigreeNodeProps {
-  profile: Profile
+  animal: Animal
 }
 
-const Pedigree: React.FC<PedigreeNodeProps> = ({profile}) => {
+const Pedigree: React.FC<PedigreeNodeProps> = ({animal: profile}) => {
   return (
     <Card>
       <Card.Body>

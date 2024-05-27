@@ -1,11 +1,11 @@
 import React from 'react'
 import {Card, Row, Col, Image, ProgressBar} from 'react-bootstrap'
-import {Profile} from '../interfaces/profile'
+import {Animal} from '../interfaces/animal'
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome'
 import {faCakeCandles, faLocationDot, faPaw} from '@fortawesome/free-solid-svg-icons'
 
 export interface ProfileCardProps {
-  profile: Profile
+  profile: Animal
 }
 
 const getProgressBarVariant = (value: number) => {
@@ -50,16 +50,26 @@ const ProfileCard: React.FC<ProfileCardProps> = ({profile}) => {
             <ul className="list-inline">
               <li className="text-muted list-inline-item">
                 <FontAwesomeIcon icon={faPaw} />{' '}
-                <a href={`/type/${profile.animalType}`} className="text-decoration-none text-muted">
-                  {profile.animalType}
+                <a href={`/type/${profile.type}`} className="text-decoration-none text-muted">
+                  {profile.type}
                 </a>
               </li>
               <li className="text-muted list-inline-item">
                 <FontAwesomeIcon icon={faCakeCandles} /> {profile.birthday} (Age: 2 years)
               </li>
-              {/* @todo use locationId if present */}
+              {/* @todo use organization if present */}
               <li className="text-muted list-inline-item">
-                <FontAwesomeIcon icon={faLocationDot} /> {profile.location}
+                <FontAwesomeIcon icon={faLocationDot} />{' '}
+                {profile.organization ? (
+                  <a
+                    href={`/organization/${profile.organization.id}`}
+                    className="text-decoration-none text-muted"
+                  >
+                    {profile.organization.name}
+                  </a>
+                ) : (
+                  profile.location
+                )}
               </li>
             </ul>
             <ul className="list-inline">

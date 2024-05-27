@@ -22,7 +22,7 @@ const PostCard: React.FC<PostCardProps> = ({index, post, onLike}) => {
     <Card className={`mb-0 ${index === 0 ? 'rounded-top-0' : ''}`}>
       <Card.Body>
         <Row>
-          <Col xs="auto">
+          <Col xs="1">
             <Image src="https://loremflickr.com/48/48/cat?lock=1" roundedCircle />
           </Col>
           <Col>

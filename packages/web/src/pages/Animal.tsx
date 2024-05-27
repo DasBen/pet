@@ -3,7 +3,7 @@ import ProfileCard from '../components/profileCard'
 import MediaCard from '../components/mediaCard'
 import PostCard from '../components/postCard'
 import {posts} from '../mock/posts'
-import {profile} from '../mock/profile'
+import {animal} from '../mock/animal'
 import Pedigree from '../components/pedigree'
 
 const ProfilePage: React.FC = () => {
@@ -30,7 +30,7 @@ const ProfilePage: React.FC = () => {
 
   return (
     <>
-      <ProfileCard profile={profile} />
+      <ProfileCard profile={animal} />
       <Tabs defaultActiveKey="posts" id="profile-tabs" className="mt-3" fill>
         <Tab eventKey="posts" title="Posts">
           {renderPosts()}
@@ -46,9 +46,9 @@ const ProfilePage: React.FC = () => {
             </Col>
           </Row>
         </Tab>
-        {(profile.children || profile.siblings || profile.mother || profile.father) && (
+        {(animal.children || animal.siblings || animal.mother || animal.father) && (
           <Tab eventKey="pedigree" title="Pedigree">
-            <Pedigree profile={profile} />
+            <Pedigree animal={animal} />
           </Tab>
         )}
       </Tabs>
