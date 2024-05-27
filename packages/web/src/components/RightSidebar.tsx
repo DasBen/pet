@@ -1,7 +1,7 @@
 import React from 'react'
-import SearchBar from './SearchBar'
-import HashtagList from './HashtagList'
-import {Hashtag} from '../interfaces/Hashtag'
+import SearchBar from './searchBar'
+import HashtagList from './hashtagList'
+import {Hashtag} from '../interfaces/hashtag'
 
 interface RightSidebarProps {
   trendingHashtags: Hashtag[]

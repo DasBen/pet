@@ -1,6 +1,6 @@
 import React from 'react'
 import {Card} from 'react-bootstrap'
-import {Hashtag} from '../interfaces/Hashtag'
+import {Hashtag} from '../interfaces/hashtag'
 
 interface HashtagListProps {
   className?: string

@@ -4,8 +4,8 @@ import {Card, Row, Col, Image, ButtonGroup} from 'react-bootstrap'
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome'
 import {faHeart, faComment, faDollarSign, faShare} from '@fortawesome/free-solid-svg-icons'
 import {formatDistanceToNow, format} from 'date-fns'
-import HoverButton from './HoverButton'
-import {Post} from '../interfaces/Post'
+import HoverButton from './hoverButton'
+import {Post} from '../interfaces/post'
 
 interface PostCardProps {
   index: number

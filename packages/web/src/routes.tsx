@@ -1,6 +1,6 @@
 import {Route, Routes} from 'react-router-dom'
-import Home from './pages/Home.tsx'
-import Animal from './pages/Animal.tsx'
+import Home from './pages/home.tsx'
+import Animal from './pages/animal.tsx'
 
 export default function Links() {
   return (

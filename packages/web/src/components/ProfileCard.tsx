@@ -1,6 +1,6 @@
 import React from 'react'
 import {Card, Row, Col, Image, ProgressBar} from 'react-bootstrap'
-import {Profile} from '../interfaces/Profile'
+import {Profile} from '../interfaces/profile'
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome'
 import {faCakeCandles, faLocationDot, faPaw} from '@fortawesome/free-solid-svg-icons'
 

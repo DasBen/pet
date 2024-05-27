@@ -1,7 +1,7 @@
 import React from 'react'
 import {Card, Col, Row} from 'react-bootstrap'
-import {Profile} from '../interfaces/Profile'
-import ProfileShortCard from './ProfileShortCard'
+import {Profile} from '../interfaces/profile'
+import ProfileShortCard from './profileShortCard'
 
 interface PedigreeNodeProps {
   profile: Profile

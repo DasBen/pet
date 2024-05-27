@@ -1,7 +1,7 @@
 // In your main index.js or App.js file where you render the layout components
 import React from 'react'
 import ReactDOM from 'react-dom/client'
-import Footer from './components/Footer.tsx'
+import Footer from './components/footer.tsx'
 import {BrowserRouter} from 'react-router-dom'
 import Routes from './routes.tsx'
 import {Slide, ToastContainer} from 'react-toastify'
@@ -13,10 +13,10 @@ import './css/index.css'
 
 // JS
 import 'bootstrap/dist/js/bootstrap.bundle.min.js'
-import SideNav from './components/SideNav.tsx'
+import SideNav from './components/sideNav.tsx'
 import {Col, Container, Row} from 'react-bootstrap'
-import RightSidebar from './components/RightSidebar.tsx'
-import {Hashtag} from './interfaces/Hashtag.ts'
+import RightSidebar from './components/rightSidebar.tsx'
+import {Hashtag} from './interfaces/hashtag.ts'
 
 const trendingHashtags: Hashtag[] = [
   {tag: 'adoptme', count: 100},
