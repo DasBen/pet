@@ -1,5 +1,5 @@
 import {Animal} from './animal'
-import { Organization } from './organization'
+import {Organization} from './organization'
 
 export interface CaretakerProfile {
     animalsCaredFor?: Animal[]

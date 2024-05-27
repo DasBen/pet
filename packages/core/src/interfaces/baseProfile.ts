@@ -10,5 +10,4 @@ export interface BaseProfile {
     followers: number
     following?: number
     birthday?: string
-    posts: Post[]
 }

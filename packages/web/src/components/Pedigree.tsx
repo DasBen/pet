@@ -1,6 +1,6 @@
 import React from 'react'
 import {Card, Col, Row} from 'react-bootstrap'
-import {Animal} from '../interfaces/animal'
+import {Animal} from '../../../core/src/interfaces/animal'
 import ProfileShortCard from './profileShortCard'
 
 interface PedigreeNodeProps {

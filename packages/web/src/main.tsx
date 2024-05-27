@@ -16,7 +16,7 @@ import 'bootstrap/dist/js/bootstrap.bundle.min.js'
 import SideNav from './components/sideNav.tsx'
 import {Col, Container, Row} from 'react-bootstrap'
 import RightSidebar from './components/rightSidebar.tsx'
-import {Hashtag} from './interfaces/hashtag.ts'
+import {Hashtag} from '../../core/src/interfaces/hashtag.ts'
 
 const trendingHashtags: Hashtag[] = [
   {tag: 'adoptme', count: 100},

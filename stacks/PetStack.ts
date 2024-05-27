@@ -71,6 +71,7 @@ export function PetStack({app, stack}: StackContext) {
                 sortKey: 'GSI3SK'
             }
         },
+        timeToLiveAttribute: 'deleteAt',
         cdk: {
             table: {
                 removalPolicy: removalPolicy
@@ -93,8 +94,7 @@ export function PetStack({app, stack}: StackContext) {
         // @todo rate limit for all routes?
         routes: {
             // User Routes
-            // 'GET /user': `packages/api/src/api/userApi.get`,
-            // 'PUT /user': `packages/api/src/api/userApi.put`,
+            'GET /animal': `packages/api/src/animalApi.get`,
         }
     })
     api.attachPermissions([

@@ -1,9 +1,9 @@
 import React from 'react'
 import {Card, Row, Col, Image, ProgressBar} from 'react-bootstrap'
-import {Animal} from '../interfaces/animal'
+import {Animal} from '../../../core/src/interfaces/animal'
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome'
 import {faCakeCandles, faLocationDot, faPaw} from '@fortawesome/free-solid-svg-icons'
-import {BaseProfile} from '../interfaces/baseProfile'
+import {BaseProfile} from '../../../core/src/interfaces/baseProfile'
 
 export interface ProfileCardProps {
   profile: BaseProfile

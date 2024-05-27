@@ -24,10 +24,19 @@
     "paths": {
       "@core/*": [
         "../core/src/*"
-      ]}
+      ]
+    }
   },
   "include": [
-    "src"
+    "src",
+    "../core/src/interfaces/animal.ts",
+    "../core/src/interfaces/baseProfile.ts",
+    "../core/src/interfaces/careTaker.ts",
+    "../core/src/interfaces/hashtag.ts",
+    "../core/src/interfaces/organization.ts",
+    "../core/src/interfaces/post.ts",
+    "../core/src/interfaces/user.ts",
+    "../core/src/mock"
   ],
   "references": [
     {

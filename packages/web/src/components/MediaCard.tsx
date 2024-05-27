@@ -1,6 +1,6 @@
 import React from 'react'
 import {Card} from 'react-bootstrap'
-import {Post} from '../interfaces/post'
+import {Post} from '../../../core/src/interfaces/post'
 
 interface MediaCardProps {
   post: Post
