@@ -1,5 +1,6 @@
 import {Organization} from '../interfaces/organization'
 import {caretaker} from './caretaker'
+import {posts} from './posts'
 
 export const organization: Organization = {
     id: 'org1',
@@ -14,6 +15,5 @@ export const organization: Organization = {
     address: '123 Animal St, Pet City, PC 12345',
     followers: 1500,
     following: 200,
-    posts: [],
-    caretakers: [caretaker]
+    posts: posts
 }

@@ -1,4 +1,5 @@
 import {Animal} from '../interfaces/animal'
+import {posts} from './posts'
 
 export const mother: Animal = {
     id: '2',
@@ -6,8 +7,9 @@ export const mother: Animal = {
     bannerImageUrl: 'https://loremflickr.com/1920/400/cat?lock=4',
     name: 'Whiskers',
     followers: 50,
-    type: 'Cat',
-    posts: []
+    animalType: 'Cat',
+    type: 'animal',
+    posts: posts
 }
 
 export const father: Animal = {
@@ -16,8 +18,9 @@ export const father: Animal = {
     bannerImageUrl: 'https://loremflickr.com/1920/400/cat?lock=6',
     name: 'Boots',
     followers: 60,
-    type: 'Cat',
-    posts: []
+    animalType: 'Cat',
+    type: 'animal',
+    posts: posts
 }
 
 export const sibling: Animal = {
@@ -26,8 +29,9 @@ export const sibling: Animal = {
     bannerImageUrl: 'https://loremflickr.com/1920/400/cat?lock=8',
     name: 'Mittens',
     followers: 30,
-    type: 'Cat',
-    posts: []
+    animalType: 'Cat',
+    type: 'animal',
+    posts: posts
 }
 
 export const child: Animal = {
@@ -36,8 +40,9 @@ export const child: Animal = {
     bannerImageUrl: 'https://loremflickr.com/1920/400/cat?lock=10',
     name: 'Socks',
     followers: 10,
-    type: 'Cat',
-    posts: []
+    animalType: 'Cat',
+    type: 'animal',
+    posts: posts
 }
 
 export const animal: Animal = {
@@ -51,10 +56,11 @@ export const animal: Animal = {
     monthlyFundingCurrent: 600,
     lifetimeFundingGoal: 10000,
     lifetimeFundingCurrent: 600,
-    type: 'Cat',
+    animalType: 'Cat',
+    type: 'animal',
     birthday: '2019-01-01',
     location: 'New York, NY',
-    posts: [],
+    posts: posts,
     mother: mother,
     father: father,
     siblings: [sibling],

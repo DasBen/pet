@@ -9,5 +9,6 @@ export interface BaseProfile {
     description?: string
     followers: number
     following?: number
+    birthday?: string
     posts: Post[]
 }

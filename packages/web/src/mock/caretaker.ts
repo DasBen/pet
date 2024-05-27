@@ -1,17 +1,18 @@
 import {UserProfile} from '../interfaces/user'
 import {animal} from './animal'
 import {organization} from './organization'
+import {posts} from './posts'
 
 export const caretaker: UserProfile = {
     id: 'user1',
-    type: 'User',
-    name: 'Jane Smith',
+    type: 'caretaker',
+    name: 'Jon Smith',
     profileImageUrl: 'https://loremflickr.com/120/120/user',
     bannerImageUrl: 'https://loremflickr.com/1920/400/user-banner',
     description: 'Animal lover and pet owner.',
-    followers: 100,
+    followers: 51,
     following: 50,
-    posts: [],
+    posts: posts,
     ownedAnimals: [animal],
     careTakerProfile: {
         animalsCaredFor: [animal],

@@ -18,8 +18,28 @@ const PostCard: React.FC<PostCardProps> = ({index, post, onLike}) => {
   const fullTimestamp = format(postDate, 'PPpp')
   const timeAgo = formatDistanceToNow(postDate, {addSuffix: true})
 
+  const replaceWithLinks = (text: string) => {
+    return text.split(' ').map((word, index) =>
+      word.startsWith('#') ? (
+        <span key={`${word}-${index}`}>
+          <a href={`/tags/${word.substring(1)}`} className="text-decoration-none">
+            {word}
+          </a>{' '}
+        </span>
+      ) : word.startsWith('@') ? (
+        <span key={`${word}-${index}`}>
+          <a href={`/profile/${word.substring(1)}`} className="text-decoration-none">
+            {word}
+          </a>{' '}
+        </span>
+      ) : (
+        <span key={`${word}-${index}`}>{word} </span>
+      )
+    )
+  }
+
   return (
-    <Card className={`mb-0 ${index === 0 ? 'rounded-top-0' : ''}`}>
+    <Card key={index} className={`mb-0 ${index === 0 ? 'rounded-top-0' : ''}`}>
       <Card.Body>
         <Row>
           <Col xs="1">
@@ -46,25 +66,7 @@ const PostCard: React.FC<PostCardProps> = ({index, post, onLike}) => {
                 Your browser does not support the video tag.
               </video>
             )}
-            <Card.Text className="mt-3">
-              {post.text.split(' ').map((word) =>
-                word.startsWith('#') ? (
-                  <>
-                    <a href={`/tags/${word.substring(1)}`} key={word}>
-                      {word}
-                    </a>{' '}
-                  </>
-                ) : word.startsWith('@') ? (
-                  <>
-                    <a href={`/profile/${word.substring(1)}`} key={word}>
-                      {word}
-                    </a>{' '}
-                  </>
-                ) : (
-                  `${word} `
-                )
-              )}
-            </Card.Text>
+            <Card.Text className="mt-3">{replaceWithLinks(post.text)}</Card.Text>
           </Col>
         </Row>
       </Card.Body>

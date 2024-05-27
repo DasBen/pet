@@ -1,10 +1,9 @@
 import {Post} from '../interfaces/post'
-import {user} from './user'
 
 export const posts: Post[] = [
     {
         id: '1',
-        profileId: user.id,
+        profileId: 'user.id',
         mediaType: 'image',
         mediaUrl: 'https://loremflickr.com/1024/768/cat?random=1',
         text: 'Happy Birthday Fluffy! #birthday',
@@ -13,7 +12,7 @@ export const posts: Post[] = [
     },
     {
         id: '2',
-        profileId: user.id,
+        profileId: 'user.id',
         mediaType: 'image',
         mediaUrl: 'https://loremflickr.com/1024/768/cat?random=2',
         text: 'Look at this cute cat! #adorable',
@@ -22,7 +21,7 @@ export const posts: Post[] = [
     },
     {
         id: '3',
-        profileId: user.id,
+        profileId: 'user.id',
         mediaType: 'video',
         mediaUrl: 'https://www.w3schools.com/html/mov_bbb.mp4',
         text: 'This cat is having so much fun!',
@@ -31,7 +30,7 @@ export const posts: Post[] = [
     },
     {
         id: '4',
-        profileId: user.id,
+        profileId: 'user.id',
         mediaType: 'text',
         mediaUrl: '',
         text: 'Please support our cats by donating! Check out #donate for more details.',

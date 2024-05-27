@@ -2,24 +2,55 @@ import {Col, Tabs, Tab, Row, Card} from 'react-bootstrap'
 import ProfileCard from '../components/profileCard'
 import MediaCard from '../components/mediaCard'
 import PostCard from '../components/postCard'
-import {posts} from '../mock/posts'
-import {animal} from '../mock/animal'
 import Pedigree from '../components/pedigree'
+import {user} from '../mock/user'
+import {useEffect, useState} from 'react'
+import {BaseProfile} from '../interfaces/baseProfile'
+import {organization} from '../mock/organization'
+import {caretaker} from '../mock/caretaker'
+import {animal} from '../mock/animal'
+import {useParams} from 'react-router-dom'
+import {Animal} from '../interfaces/animal'
+import {get} from 'lodash'
 
-const ProfilePage: React.FC = () => {
+const Profile: React.FC = () => {
+  const {id} = useParams<{id: string}>()
+  const [profile, setProfile] = useState<BaseProfile>(user)
+
+  // @todo fetch profile by id
+  useEffect(() => {
+    switch (id) {
+      case '1':
+        setProfile(user)
+        break
+      case '2':
+        setProfile(caretaker)
+        break
+      case '3':
+        setProfile(organization)
+        break
+      case '4':
+        setProfile(animal)
+        break
+      default:
+        setProfile(user)
+        break
+    }
+  }, [id])
+
   const handleLike = (postId: string) => {
     console.log(`Liked post ${postId}`)
   }
 
   const renderPosts = () =>
-    posts
+    profile.posts
       .sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime())
       .map((post, index) => (
         <PostCard key={post.id} index={index} post={post} onLike={handleLike} />
       ))
 
   const renderMediaGrid = () =>
-    posts
+    profile.posts
       .filter((post) => post.mediaType === 'image' || post.mediaType === 'video')
       .sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime())
       .map((post) => (
@@ -28,9 +59,17 @@ const ProfilePage: React.FC = () => {
         </Col>
       ))
 
+  const getPedigree = (profile: Animal) => {
+    return (
+      <Tab eventKey="pedigree" title="Pedigree">
+        <Pedigree animal={profile} />
+      </Tab>
+    )
+  }
+
   return (
     <>
-      <ProfileCard profile={animal} />
+      <ProfileCard profile={profile} />
       <Tabs defaultActiveKey="posts" id="profile-tabs" className="mt-3" fill>
         <Tab eventKey="posts" title="Posts">
           {renderPosts()}
@@ -46,14 +85,10 @@ const ProfilePage: React.FC = () => {
             </Col>
           </Row>
         </Tab>
-        {(animal.children || animal.siblings || animal.mother || animal.father) && (
-          <Tab eventKey="pedigree" title="Pedigree">
-            <Pedigree animal={animal} />
-          </Tab>
-        )}
+        {getPedigree(profile as Animal)}
       </Tabs>
     </>
   )
 }
 
-export default ProfilePage
+export default Profile

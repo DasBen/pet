@@ -41,6 +41,29 @@ const SideNav: React.FC = () => {
           <FontAwesomeIcon icon={faUser} className="me-2" /> Profile{' '}
         </h5>
       </Link>
+      {/* @todo dummy profiles */}
+      <ul>
+        <li>
+          <Nav.Link as={Link} to="/profile/1">
+            User
+          </Nav.Link>
+        </li>
+        <li>
+          <Nav.Link as={Link} to="/profile/2">
+            Caretaker
+          </Nav.Link>
+        </li>
+        <li>
+          <Nav.Link as={Link} to="/profile/3">
+            Organization
+          </Nav.Link>
+        </li>
+        <li>
+          <Nav.Link as={Link} to="/profile/4">
+            Animal
+          </Nav.Link>
+        </li>
+      </ul>
       <Link
         to="/explore"
         className="btn btn-block btn-outline-secondary text-start rounded-0 border-0 text-reset rounded-1 ms-3"

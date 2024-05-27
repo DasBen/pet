@@ -1,5 +1,6 @@
 import {UserProfile} from '../interfaces/user'
 import {animal} from './animal'
+import {posts} from './posts'
 
 export const user: UserProfile = {
     id: 'user1',
@@ -10,7 +11,7 @@ export const user: UserProfile = {
     description: 'Animal lover and pet owner.',
     followers: 100,
     following: 50,
-    posts: [],
+    posts: posts,
     ownedAnimals: [animal],
     address: '456 Pet Lane, Animal Town, AT 54321'
 }
