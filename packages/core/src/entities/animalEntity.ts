@@ -6,9 +6,7 @@ import {BaseProfile} from '../interfaces/baseProfile'
 export interface AnimalInterface extends BaseProfile {
     animalType: string
     monthlyFundingGoal?: number
-    monthlyFundingCurrent?: number
     lifetimeFundingGoal?: number
-    lifetimeFundingCurrent?: number
     location?: string
     motherId?: string
     fatherId?: string
@@ -30,7 +28,7 @@ export const Animal = new Entity(
             id: {
                 type: 'string',
                 required: true,
-                default: (): string => crypto.randomUUID()
+                default: () => crypto.randomUUID()
             },
             type: {
                 type: 'string',
@@ -39,7 +37,11 @@ export const Animal = new Entity(
             },
             animalType: {
                 type: 'string',
-                required: true
+                required: true,
+                set: (value: string | undefined) => {
+                    if (!value) return ''
+                    return value.charAt(0).toUpperCase() + value.slice(1)
+                }
             },
             name: {
                 type: 'string',
@@ -107,8 +109,7 @@ export const Animal = new Entity(
                 type: 'number',
                 readOnly: true,
                 required: true,
-                default: () => Date.now(),
-                set: () => Date.now()
+                default: () => Date.now()
             },
             updatedAt: {
                 type: 'number',
@@ -124,11 +125,11 @@ export const Animal = new Entity(
         indexes: {
             primary: {
                 pk: {
-                    field: 'pk',
+                    field: 'PK',
                     composite: ['id']
                 },
                 sk: {
-                    field: 'sk',
+                    field: 'SK',
                     composite: []
                 }
             },

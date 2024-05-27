@@ -102,6 +102,12 @@ export class AnimalRepository {
         if (params?.response === 'default') {
             params.response = 'all_new'
         }
+
+        // remove read-only fields
+        delete object.id
+        delete object.createdAt
+        delete object.updatedAt
+
         const result = await Animal.update({id}).set(object).go(params)
         return <AnimalInterface>result.data
     }

@@ -1,36 +1,91 @@
-import React from 'react'
+import React, {useEffect, useState} from 'react'
 import {Card, Col, Row} from 'react-bootstrap'
-import {Animal} from '../../../core/src/interfaces/animal'
+import {AnimalInterface} from '@core/entities/animalEntity'
 import ProfileShortCard from './profileShortCard'
+import ApiClient from '../services/AnimalApi'
 
 interface PedigreeNodeProps {
-  animal: Animal
+  animal?: AnimalInterface
 }
 
+const apiClient = new ApiClient(import.meta.env.VITE_APP_API_URL)
+
 const Pedigree: React.FC<PedigreeNodeProps> = ({animal: profile}) => {
+  const [mother, setMother] = useState<AnimalInterface | null>(null)
+  const [father, setFather] = useState<AnimalInterface | null>(null)
+  const [siblings, setSiblings] = useState<AnimalInterface[]>([])
+  const [children, setChildren] = useState<AnimalInterface[]>([])
+
+  useEffect(() => {
+    if (!profile) {
+      return
+    }
+
+    const fetchMother = async () => {
+      if (profile.motherId) {
+        const response = await apiClient.getAnimal(profile.motherId)
+        if (response) {
+          setMother(response)
+        }
+      }
+    }
+
+    const fetchFather = async () => {
+      if (profile.fatherId) {
+        const response = await apiClient.getAnimal(profile.fatherId)
+        if (response) {
+          setFather(response)
+        }
+      }
+    }
+
+    const fetchSiblings = async () => {
+      if (profile.siblings) {
+        const response = await Promise.all(profile.siblings.map((id) => apiClient.getAnimal(id)))
+        if (response) {
+          setSiblings(response)
+        }
+      }
+    }
+
+    const fetchChildren = async () => {
+      if (profile.children) {
+        const response = await Promise.all(profile.children.map((id) => apiClient.getAnimal(id)))
+        if (response) {
+          setChildren(response)
+        }
+      }
+    }
+
+    fetchMother()
+    fetchFather()
+    fetchSiblings()
+    fetchChildren()
+  }, [profile])
+
   return (
     <Card>
       <Card.Body>
         <Row>
-          {profile.mother && (
+          {mother && (
             <Col>
               <h5>Mother</h5>
-              <ProfileShortCard profile={profile.mother} />
+              <ProfileShortCard profile={mother} />
             </Col>
           )}
-          {profile.father && (
+          {father && (
             <Col>
               <h5>Father</h5>
-              <ProfileShortCard profile={profile.father} />
+              <ProfileShortCard profile={father} />
             </Col>
           )}
         </Row>
-        {profile.siblings && profile.siblings.length > 0 && (
+        {siblings.length > 0 && (
           <Row className="mt-3">
             <Col>
               <h5>Siblings</h5>
               <Row>
-                {profile.siblings.map((sibling) => (
+                {siblings.map((sibling) => (
                   <Col key={sibling.id}>
                     <ProfileShortCard profile={sibling} />
                   </Col>
@@ -39,12 +94,12 @@ const Pedigree: React.FC<PedigreeNodeProps> = ({animal: profile}) => {
             </Col>
           </Row>
         )}
-        {profile.children && profile.children.length > 0 && (
+        {children.length > 0 && (
           <Row className="mt-3">
             <Col>
               <h5>Children</h5>
               <Row>
-                {profile.children.map((child) => (
+                {children.map((child) => (
                   <Col key={child.id}>
                     <ProfileShortCard profile={child} />
                   </Col>

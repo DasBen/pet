@@ -83,7 +83,10 @@ export function PetStack({app, stack}: StackContext) {
     const api = new Api(stack, 'api', {
         cors: {
             allowMethods: ['ANY'],
-            allowOrigins: ['http://localhost:5173']
+            allowOrigins: [
+                'http://localhost:5173',
+                'https://qjsux9xgog.execute-api.eu-central-1.amazonaws.com'
+            ]
         },
         defaults: {
             function: {
@@ -91,10 +94,12 @@ export function PetStack({app, stack}: StackContext) {
                 timeout: '30 seconds'
             }
         },
-        // @todo rate limit for all routes?
         routes: {
-            // User Routes
-            'GET /animal': `packages/api/src/animalApi.get`,
+            // Animal Routes
+            'GET /animal/{id}': `packages/api/src/animalApi.get`,
+            'PUT /animal/{id}': `packages/api/src/animalApi.put`,
+            'POST /animal': `packages/api/src/animalApi.post`,
+            'DELETE /animal/{id}': `packages/api/src/animalApi.del`
         }
     })
     api.attachPermissions([
