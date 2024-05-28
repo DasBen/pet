@@ -5,6 +5,10 @@ import {faCakeCandles, faLocationDot} from '@fortawesome/free-solid-svg-icons'
 import {ProfileCardProps} from './animalProfileCard'
 
 const ProfileCard: React.FC<ProfileCardProps> = ({profile}) => {
+  if (!profile) {
+    return null
+  }
+
   return (
     <Card>
       <Card.Body>
@@ -18,7 +22,7 @@ const ProfileCard: React.FC<ProfileCardProps> = ({profile}) => {
             <ul className="list-inline">
               {profile.birthday && (
                 <li className="text-muted list-inline-item">
-                  <FontAwesomeIcon icon={faCakeCandles} /> {profile.birthday} (Age: 2 years)
+                  <FontAwesomeIcon icon={faCakeCandles} /> {profile.birthday}
                 </li>
               )}
               {/* @todo use locationId if present */}

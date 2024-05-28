@@ -1,5 +1,5 @@
 import {ApiHandler} from 'sst/node/api'
-import {Animal, AnimalInterface} from '@luna/core/entities/animalEntity'
+import {AnimalInterface} from '@luna/core/entities/animal'
 import {AnimalRepository} from '@luna/core/repositories/animalRepository'
 import Joi from 'joi'
 
@@ -45,7 +45,6 @@ export const post = ApiHandler(async (event) => {
 
     // Create the animal
     const animal = await apiRepository.create(requestBody)
-    console.log('Created animal:', animal)
 
     return {
         statusCode: 200,
@@ -83,6 +82,60 @@ export const get = ApiHandler(async (event) => {
             'Content-Type': 'application/json'
         },
         body: JSON.stringify(animal)
+    }
+})
+
+export const list = ApiHandler(async (event) => {
+    // Get the animal type from the query string
+    const type = event.queryStringParameters?.type
+    const animalType = event.queryStringParameters?.animalType
+
+    // Validate the animal type
+    const schema = Joi.object({
+        type: Joi.string(),
+        animalType: Joi.string()
+    })
+    const {error} = schema.validate({type, animalType})
+    if (error) {
+        console.error(error)
+        return {
+            statusCode: 400,
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(error)
+        }
+    }
+
+    // List the animals
+    if (type) {
+        const animals = await apiRepository.listByType(type)
+        return {
+            statusCode: 200,
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(animals)
+        }
+    }
+
+    if (animalType) {
+        const animals = await apiRepository.listByAnimalType(animalType)
+        return {
+            statusCode: 200,
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(animals)
+        }
+    }
+
+    return {
+        statusCode: 400,
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({error: 'Missing query parameter'})
     }
 })
 
@@ -133,7 +186,6 @@ export const put = ApiHandler(async (event) => {
 
     // Update the animal
     const animal = await apiRepository.update(id!, requestBody)
-    console.log('Updated animal:', animal)
 
     return {
         statusCode: 200,

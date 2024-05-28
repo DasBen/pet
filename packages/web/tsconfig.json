@@ -36,7 +36,8 @@
     "../core/src/interfaces/organization.ts",
     "../core/src/interfaces/post.ts",
     "../core/src/interfaces/user.ts",
-    "../core/src/mock"
+    "../core/src/mock",
+    "../core/src/services/AnimalApi.ts"
   ],
   "references": [
     {

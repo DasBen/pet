@@ -1,4 +1,4 @@
-import {Animal, AnimalInterface} from '../entities/animalEntity'
+import {AnimalEntity, AnimalInterface, removeReadOnlyFields} from '../entities/animal'
 import {
     DeleteQueryOptions,
     PutQueryOptions,
@@ -17,20 +17,20 @@ export class AnimalRepository {
      * @throws Error if the Animal object already exists
      */
     async create(object: AnimalInterface, params?: PutQueryOptions): Promise<AnimalInterface> {
-        const result = await Animal.create(object).go(params)
+        const result = await AnimalEntity.create(object).go(params)
         return <AnimalInterface>result.data
     }
 
     /**
      * Retrieves an object from the database.
-     * If the object does not exist, undefined is returned.
+     * If the object does not exist, null is returned.
      *
      * @param id Animal ID
      * @param params QueryOptions (optional)
-     * @returns Promise<AnimalInterface | undefined>
+     * @returns Promise<AnimalInterface | null>
      */
-    async get(id: string, params?: QueryOptions): Promise<AnimalInterface | undefined> {
-        const result = await Animal.get({id}).go(params)
+    async get(id: string, params?: QueryOptions): Promise<AnimalInterface | null> {
+        const result = await AnimalEntity.get({id}).go(params)
         return <AnimalInterface>result.data
     }
 
@@ -42,7 +42,7 @@ export class AnimalRepository {
      * @returns Promise<AnimalInterface>
      */
     async upsert(object: AnimalInterface, params?: UpdateQueryParams): Promise<AnimalInterface> {
-        const result = await Animal.upsert(object).go(params)
+        const result = await AnimalEntity.upsert(object).go(params)
         return <AnimalInterface>result.data
     }
 
@@ -56,7 +56,7 @@ export class AnimalRepository {
      * @throws Error if the Animal object already exists
      */
     async put(object: AnimalInterface, params?: PutQueryOptions): Promise<AnimalInterface> {
-        const result = await Animal.put(object).go(params)
+        const result = await AnimalEntity.put(object).go(params)
         return <AnimalInterface>result.data
     }
 
@@ -77,10 +77,12 @@ export class AnimalRepository {
         params?: UpdateQueryParams
     ): Promise<AnimalInterface> {
         // Return complete object if response is not set
-        if (params?.response === 'default') {
-            params.response = 'all_new'
-        }
-        const result = await Animal.patch({id}).set(object).go(params)
+        params = params || {response: 'all_new'}
+
+        // remove read-only fields
+        const cleanObject = removeReadOnlyFields(object)
+
+        const result = await AnimalEntity.patch({id}).set(cleanObject).go(params)
         return <AnimalInterface>result.data
     }
 
@@ -99,16 +101,12 @@ export class AnimalRepository {
         params?: UpdateQueryParams
     ): Promise<Partial<AnimalInterface>> {
         // Return complete object if response is not set
-        if (params?.response === 'default') {
-            params.response = 'all_new'
-        }
+        params = params || {response: 'all_new'}
 
         // remove read-only fields
-        delete object.id
-        delete object.createdAt
-        delete object.updatedAt
+        const cleanObject = removeReadOnlyFields(object)
 
-        const result = await Animal.update({id}).set(object).go(params)
+        const result = await AnimalEntity.update({id}).set(cleanObject).go(params)
         return <AnimalInterface>result.data
     }
 
@@ -121,7 +119,7 @@ export class AnimalRepository {
      * @returns Promise<void>
      */
     async delete(id: string, params?: DeleteQueryOptions): Promise<void> {
-        await Animal.delete({id}).go(params)
+        await AnimalEntity.delete({id}).go(params)
     }
 
     /**
@@ -131,7 +129,7 @@ export class AnimalRepository {
      */
     async truncateEntity(): Promise<void> {
         // Retrieve all pages for the Entity
-        const result = await Animal.scan.go({pages: 'all'})
+        const result = await AnimalEntity.scan.go({pages: 'all'})
 
         // Prepare PK/SK for all items in Batch
         const toDelete = result.data.map((item) => ({
@@ -139,7 +137,7 @@ export class AnimalRepository {
         }))
 
         // Delete all items with Delete Batch
-        await Animal.delete(toDelete).go()
+        await AnimalEntity.delete(toDelete).go()
     }
 
     /**
@@ -152,18 +150,54 @@ export class AnimalRepository {
      * @throws Error if the object does not exist
      */
     async remove(id: string, params?: DeleteQueryOptions): Promise<void> {
-        await Animal.remove({id}).go(params)
+        await AnimalEntity.remove({id}).go(params)
     }
 
     /**
      * Query by type
      *
-     * @param type
+     * @param type string
      * @param params QueryOptions (optional)
-     * @returns Promise<AnimalInterface[]>
+     * @returns QueryResponse<typeof AnimalEntity>
      */
-    async listByType(type: string, params?: QueryOptions): Promise<QueryResponse<typeof Animal>> {
-        const result = await Animal.query.byType({type}).go(params)
+    async listByType(
+        type: string,
+        params?: QueryOptions
+    ): Promise<QueryResponse<typeof AnimalEntity>> {
+        type = type.toLowerCase()
+        params = params || {order: 'desc'}
+
+        const result = await AnimalEntity.query.byType({type}).go(params)
         return result
+    }
+
+    /**
+     * Query by animalType
+     *
+     * @param animalType string
+     * @param params QueryOptions (optional)
+     * @returns QueryResponse<typeof AnimalEntity>
+     */
+    async listByAnimalType(
+        animalType: string,
+        params?: QueryOptions
+    ): Promise<QueryResponse<typeof AnimalEntity>> {
+        animalType = animalType.toLowerCase()
+        params = params || {order: 'desc'}
+
+        const result = await AnimalEntity.query.byAnimalType({animalType}).go(params)
+        return result
+    }
+
+    /**
+     * Get Animal by name
+     *
+     * @param name string
+     * @param params QueryOptions (optional)
+     * @returns Promise<QueryResponse<typeof Animal>>
+     */
+    async getByName(name: string, params?: QueryOptions): Promise<AnimalInterface | null> {
+        const result = await AnimalEntity.query.byName({name}).go(params)
+        return <AnimalInterface>result.data[0]
     }
 }

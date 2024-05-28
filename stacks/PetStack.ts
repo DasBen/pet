@@ -1,25 +1,24 @@
-import {
-    StackContext,
-    Table,
-    EventBus,
-    Bucket,
-    StaticSite,
-    Api,
-    Auth,
-    Config as ConfigConstruct,
-    use,
-    Config
-} from 'sst/constructs'
+import {StackContext, Table, EventBus, Bucket, StaticSite, Api, Function} from 'sst/constructs'
 import * as cdk from 'aws-cdk-lib'
+import {StartingPosition} from 'aws-cdk-lib/aws-lambda'
+import {RetentionDays} from 'aws-cdk-lib/aws-logs'
 
 export function PetStack({app, stack}: StackContext) {
     // Stage Variables
     let removalPolicy = cdk.RemovalPolicy.RETAIN
     let lifecycleExpiration = cdk.Duration.days(7)
+    let maxBatchingWindow = cdk.Duration.seconds(60)
+    let batchSize = 100
+    let retryAttempts = 3
+    let logRetention: Lowercase<keyof typeof RetentionDays> = 'one_month'
     if (app.stage !== 'prod') {
-        app.setDefaultRemovalPolicy('destroy')
         removalPolicy = cdk.RemovalPolicy.DESTROY
+        app.setDefaultRemovalPolicy(removalPolicy)
         lifecycleExpiration = cdk.Duration.days(1)
+        maxBatchingWindow = cdk.Duration.seconds(0)
+        batchSize = 1
+        retryAttempts = 0
+        logRetention = 'one_day'
     }
 
     // Event Bus
@@ -34,7 +33,7 @@ export function PetStack({app, stack}: StackContext) {
         cdk: {
             bucket: {
                 autoDeleteObjects: removalPolicy === cdk.RemovalPolicy.DESTROY,
-                removalPolicy: removalPolicy,
+                removalPolicy,
                 lifecycleRules: [
                     {
                         expiration: lifecycleExpiration
@@ -76,6 +75,77 @@ export function PetStack({app, stack}: StackContext) {
             table: {
                 removalPolicy: removalPolicy
             }
+        },
+        stream: 'new_and_old_images'
+    })
+
+    // DynamoDBStream Consumers
+    dataTable.addConsumers(stack, {
+        animal2PostJunctionAnimalConsumer: {
+            cdk: {
+                eventSource: {
+                    startingPosition: StartingPosition.LATEST,
+                    batchSize,
+                    maxBatchingWindow,
+                    retryAttempts
+                }
+            },
+            function: {
+                handler: `packages/core/src/handler/animal2PostJunction.animal`,
+                bind: [dataTable],
+                logRetention
+            },
+            filters: [
+                {
+                    dynamodb: {
+                        NewImage: {
+                            __edb_e__: {
+                                S: ['animal']
+                            }
+                        },
+                        OldImage: {
+                            __edb_e__: {
+                                S: ['animal']
+                            }
+                        }
+                    }
+                }
+            ]
+        },
+        animal2PostJunctionPostConsumer: {
+            cdk: {
+                eventSource: {
+                    startingPosition: StartingPosition.LATEST,
+                    batchSize,
+                    maxBatchingWindow,
+                    retryAttempts
+                }
+            },
+            function: {
+                handler: `packages/core/src/handler/animal2PostJunction.post`,
+                bind: [dataTable],
+                logRetention
+            },
+            filters: [
+                {
+                    dynamodb: {
+                        NewImage: {
+                            __edb_e__: {
+                                S: ['post']
+                            }
+                        }
+                    }
+                },
+                {
+                    dynamodb: {
+                        OldImage: {
+                            __edb_e__: {
+                                S: ['post']
+                            }
+                        }
+                    }
+                }
+            ]
         }
     })
 
@@ -96,6 +166,7 @@ export function PetStack({app, stack}: StackContext) {
         },
         routes: {
             // Animal Routes
+            'GET /animal': `packages/api/src/animalApi.list`,
             'GET /animal/{id}': `packages/api/src/animalApi.get`,
             'PUT /animal/{id}': `packages/api/src/animalApi.put`,
             'POST /animal': `packages/api/src/animalApi.post`,

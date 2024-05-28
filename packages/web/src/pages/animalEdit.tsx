@@ -5,7 +5,7 @@ import {AnimalInterface} from '@core/entities/animalEntity'
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome'
 import {faPaw} from '@fortawesome/free-solid-svg-icons'
 import {toast} from 'react-toastify'
-import ApiClient from '../services/AnimalApi'
+import ApiClient from '../../../core/src/services/AnimalApi'
 
 const apiClient = new ApiClient(import.meta.env.VITE_APP_API_URL)
 
@@ -25,7 +25,7 @@ const AnimalEdit: React.FC = () => {
       if (id === undefined) {
         return
       }
-      const response = await apiClient.getAnimal(id)
+      const response = await apiClient.get(id)
 
       if (response) {
         setAnimal(response)
@@ -73,10 +73,10 @@ const AnimalEdit: React.FC = () => {
       console.log('Submitting animal', animal)
       console.log('ID:', id)
       if (id) {
-        animalResponse = await apiClient.editAnimal(animal)
+        animalResponse = await apiClient.put(animal)
         toast.success('Animal updated successfully. Redirecting...')
       } else {
-        animalResponse = await apiClient.createAnimal(animal)
+        animalResponse = await apiClient.post(animal)
         toast.success('Animal created successfully. Redirecting...')
       }
       navigate(`/animal/${animalResponse.id}`)

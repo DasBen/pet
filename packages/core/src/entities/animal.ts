@@ -17,7 +17,16 @@ export interface AnimalInterface extends BaseProfile {
     organizationId?: string
 }
 
-export const Animal = new Entity(
+type ReadOnlyFields = 'id' | 'createdAt' | 'updatedAt'
+
+export type AnimalWithoutReadOnlyFields = Omit<AnimalInterface, ReadOnlyFields>
+
+export function removeReadOnlyFields(animal: AnimalInterface): AnimalWithoutReadOnlyFields {
+    const {id, createdAt, updatedAt, ...rest} = animal
+    return rest
+}
+
+export const AnimalEntity = new Entity(
     {
         model: {
             entity: 'animal',
@@ -30,18 +39,28 @@ export const Animal = new Entity(
                 required: true,
                 default: () => crypto.randomUUID()
             },
+            createdAt: {
+                type: 'number',
+                readOnly: true,
+                required: true,
+                default: () => Date.now()
+            },
+            updatedAt: {
+                type: 'number',
+                watch: '*',
+                set: () => Date.now()
+            },
+            deleteAt: {
+                type: 'number'
+            },
             type: {
                 type: 'string',
                 required: true,
-                default: 'animal'
+                default: 'pet'
             },
             animalType: {
                 type: 'string',
-                required: true,
-                set: (value: string | undefined) => {
-                    if (!value) return ''
-                    return value.charAt(0).toUpperCase() + value.slice(1)
-                }
+                required: true
             },
             name: {
                 type: 'string',
@@ -104,22 +123,6 @@ export const Animal = new Entity(
             },
             organizationId: {
                 type: 'string'
-            },
-            createdAt: {
-                type: 'number',
-                readOnly: true,
-                required: true,
-                default: () => Date.now()
-            },
-            updatedAt: {
-                type: 'number',
-                watch: '*',
-                required: true,
-                default: () => Date.now(),
-                set: () => Date.now()
-            },
-            deleteAt: {
-                type: 'number'
             }
         },
         indexes: {
@@ -141,7 +144,29 @@ export const Animal = new Entity(
                 },
                 sk: {
                     field: 'GSI1SK',
+                    composite: ['createdAt']
+                }
+            },
+            byAnimalType: {
+                index: 'GSI2',
+                pk: {
+                    field: 'GSI2PK',
+                    composite: ['animalType']
+                },
+                sk: {
+                    field: 'GSI2SK',
+                    composite: ['createdAt']
+                }
+            },
+            byName: {
+                index: 'GSI3',
+                pk: {
+                    field: 'GSI3PK',
                     composite: []
+                },
+                sk: {
+                    field: 'GSI3SK',
+                    composite: ['name']
                 }
             }
         }

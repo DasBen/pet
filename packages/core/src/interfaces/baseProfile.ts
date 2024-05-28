@@ -1,5 +1,8 @@
 export interface BaseProfile {
     id?: string
+    createdAt?: number
+    updatedAt?: number
+    deleteAt?: number
     type: string
     name: string
     profileImageUrl: string
@@ -8,7 +11,4 @@ export interface BaseProfile {
     followers?: number
     following?: number
     birthday?: string
-    createdAt?: number
-    updatedAt?: number
-    deleteAt?: number
 }

@@ -1,11 +1,10 @@
-import {Animal} from './animal'
 import {Organization} from './organization'
 
 export interface CaretakerProfile {
-    animalsCaredFor?: Animal[]
+    animalsCaredFor?: string[]
     yearsOfExperience?: number
     qualifications?: string[]
     workSchedule?: string
     location?: string
-    organization?: Organization
+    organizationId?: string
 }

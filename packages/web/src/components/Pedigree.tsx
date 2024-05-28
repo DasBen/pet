@@ -2,7 +2,7 @@ import React, {useEffect, useState} from 'react'
 import {Card, Col, Row} from 'react-bootstrap'
 import {AnimalInterface} from '@core/entities/animalEntity'
 import ProfileShortCard from './profileShortCard'
-import ApiClient from '../services/AnimalApi'
+import ApiClient from '../../../core/src/services/AnimalApi'
 
 interface PedigreeNodeProps {
   animal?: AnimalInterface

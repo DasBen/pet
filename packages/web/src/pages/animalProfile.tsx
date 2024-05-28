@@ -5,7 +5,7 @@ import {user} from '../../../core/src/mock/user'
 import {useEffect, useState} from 'react'
 import {useParams} from 'react-router-dom'
 import {AnimalInterface} from '../../../core/src/entities/animalEntity'
-import ApiClient from '../services/AnimalApi'
+import ApiClient from '../../../core/src/services/AnimalApi'
 
 const apiClient = new ApiClient(import.meta.env.VITE_APP_API_URL)
 
@@ -18,7 +18,7 @@ const AnimalProfile: React.FC = () => {
       if (id === undefined) {
         return
       }
-      const response = await apiClient.getAnimal(id)
+      const response = await apiClient.get(id)
 
       if (response) {
         setProfile(response)
