@@ -21,13 +21,6 @@ export function PetStack({app, stack}: StackContext) {
         logRetention = 'one_day'
     }
 
-    // Event Bus
-    const bus = new EventBus(stack, 'bus', {
-        defaults: {
-            retries: 10
-        }
-    })
-
     // S3
     const storage = new Bucket(stack, 'storage', {
         cdk: {
@@ -160,7 +153,7 @@ export function PetStack({app, stack}: StackContext) {
         },
         defaults: {
             function: {
-                bind: [dataTable, storage, bus],
+                bind: [dataTable, storage],
                 timeout: '30 seconds'
             }
         },

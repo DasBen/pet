@@ -5,9 +5,10 @@ import {
     QueryResponse,
     UpdateQueryParams
 } from 'electrodb'
-import {PostEntity, PostInterface, removeReadOnlyFields} from '../entities/post'
+import {PostEntity} from '../entities/post'
 import {Animal2PostEntity} from '../entities/animal2Post'
 import {AnimalEntity} from '../entities/animal'
+import {Post, removeReadOnlyFields} from '../interfaces/post'
 
 export class PostRepository {
     /**
@@ -15,12 +16,12 @@ export class PostRepository {
      *
      * @param object Object
      * @param params PutQueryOptions (optional)
-     * @returns Promise<PostInterface>
+     * @returns Promise<Post>
      * @throws Error if the Post object already exists
      */
-    async create(object: PostInterface, params?: PutQueryOptions): Promise<PostInterface> {
+    async create(object: Post, params?: PutQueryOptions): Promise<Post> {
         const result = await PostEntity.create(object).go(params)
-        return <PostInterface>result.data
+        return <Post>result.data
     }
 
     /**
@@ -29,11 +30,11 @@ export class PostRepository {
      *
      * @param id Post ID
      * @param params QueryOptions (optional)
-     * @returns Promise<PostInterface | null>
+     * @returns Promise<Post | null>
      */
-    async get(id: string, params?: QueryOptions): Promise<PostInterface | null> {
+    async get(id: string, params?: QueryOptions): Promise<Post | null> {
         const result = await PostEntity.get({id}).go(params)
-        return <PostInterface>result.data
+        return <Post>result.data
     }
 
     /**
@@ -41,11 +42,11 @@ export class PostRepository {
      *
      * @param object Object
      * @param params UpdateQueryParams (optional)
-     * @returns Promise<PostInterface>
+     * @returns Promise<Post>
      */
-    async upsert(object: PostInterface, params?: UpdateQueryParams): Promise<PostInterface> {
+    async upsert(object: Post, params?: UpdateQueryParams): Promise<Post> {
         const result = await PostEntity.upsert(object).go(params)
-        return <PostInterface>result.data
+        return <Post>result.data
     }
 
     /**
@@ -54,12 +55,12 @@ export class PostRepository {
      *
      * @param object Object
      * @param params PutQueryOptions (optional)
-     * @returns Promise<PostInterface>
+     * @returns Promise<Post>
      * @throws Error if the Post object already exists
      */
-    async put(object: PostInterface, params?: PutQueryOptions): Promise<PostInterface> {
+    async put(object: Post, params?: PutQueryOptions): Promise<Post> {
         const result = await PostEntity.put(object).go(params)
-        return <PostInterface>result.data
+        return <Post>result.data
     }
 
     /**
@@ -69,15 +70,11 @@ export class PostRepository {
      * @param id ID
      * @param object Object
      * @param params UpdateQueryParams (optional)
-     * @returns Promise<PostInterface>
+     * @returns Promise<Post>
      * @throws Error if the object does not exist
      *
      */
-    async patch(
-        id: string,
-        object: PostInterface,
-        params?: UpdateQueryParams
-    ): Promise<PostInterface> {
+    async patch(id: string, object: Post, params?: UpdateQueryParams): Promise<Post> {
         // Return complete object if response is not set
         params = params || {response: 'all_new'}
 
@@ -85,7 +82,7 @@ export class PostRepository {
         const cleanObject = removeReadOnlyFields(object)
 
         const result = await PostEntity.patch({id}).set(cleanObject).go(params)
-        return <PostInterface>result.data
+        return <Post>result.data
     }
 
     /**
@@ -95,13 +92,9 @@ export class PostRepository {
      * @param id ID
      * @param object Object
      * @param params UpdateQueryParams (optional)
-     * @returns Promise<PostInterface>
+     * @returns Promise<Post>
      */
-    async update(
-        id: string,
-        object: PostInterface,
-        params?: UpdateQueryParams
-    ): Promise<Partial<PostInterface>> {
+    async update(id: string, object: Post, params?: UpdateQueryParams): Promise<Partial<Post>> {
         // Return complete object if response is not set
         params = params || {response: 'all_new'}
 
@@ -109,7 +102,7 @@ export class PostRepository {
         const cleanObject = removeReadOnlyFields(object)
 
         const result = await PostEntity.update({id}).set(cleanObject).go(params)
-        return <PostInterface>result.data
+        return <Post>result.data
     }
 
     /**

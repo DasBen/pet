@@ -1,9 +1,9 @@
 import {DynamoDBStreamEvent} from 'aws-lambda'
 import {unmarshall} from '@aws-sdk/util-dynamodb'
 import {AttributeValue} from '@aws-sdk/client-dynamodb'
-import {AnimalInterface} from '../entities/animal'
-import {PostInterface} from '../entities/post'
 import {Animal2PostEntity} from '../entities/animal2Post'
+import {Animal} from '../interfaces/animal'
+import {Post} from '../interfaces/post'
 
 export async function animal(event: DynamoDBStreamEvent): Promise<void> {
     for (const record of event.Records) {
@@ -12,14 +12,14 @@ export async function animal(event: DynamoDBStreamEvent): Promise<void> {
         if (record.dynamodb && record.dynamodb.OldImage) {
             oldAnimal = unmarshall(
                 record.dynamodb.OldImage as {[key: string]: AttributeValue}
-            ) as AnimalInterface
+            ) as Animal
         }
 
         let newAnimal
         if (record.dynamodb && record.dynamodb.NewImage) {
             newAnimal = unmarshall(
                 record.dynamodb.NewImage as {[key: string]: AttributeValue}
-            ) as AnimalInterface
+            ) as Animal
         }
     }
 }
@@ -31,14 +31,14 @@ export async function post(event: DynamoDBStreamEvent): Promise<void> {
         if (record.dynamodb && record.dynamodb.OldImage) {
             oldPost = unmarshall(
                 record.dynamodb.OldImage as {[key: string]: AttributeValue}
-            ) as PostInterface
+            ) as Post
         }
 
         let newPost
         if (record.dynamodb && record.dynamodb.NewImage) {
             newPost = unmarshall(
                 record.dynamodb.NewImage as {[key: string]: AttributeValue}
-            ) as PostInterface
+            ) as Post
         }
 
         // Create/Update Junction Records
@@ -55,7 +55,11 @@ export async function post(event: DynamoDBStreamEvent): Promise<void> {
     }
 }
 
-const upsertPost = async (newPost: PostInterface) => {
+const upsertPost = async (newPost: Post) => {
+    if (!newPost.mentions) {
+        return
+    }
+
     // Get Ids
     const animalIds = newPost.mentions
         .filter((mention) => mention.type === 'animal')
@@ -71,7 +75,11 @@ const upsertPost = async (newPost: PostInterface) => {
     }
 }
 
-const deletePost = async (oldPost: PostInterface) => {
+const deletePost = async (oldPost: Post) => {
+    if (!oldPost.mentions) {
+        return
+    }
+
     // Get Ids
     const animalIds = oldPost.mentions
         .filter((mention) => mention.type === 'animal')

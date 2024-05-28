@@ -1,14 +1,15 @@
 import {describe, expect, it, beforeEach, afterEach} from 'vitest'
 import {PostRepository} from './postRepository'
-import {Mention, PostInterface} from '../entities/post'
-import {AnimalInterface} from '../entities/animal'
 import {AnimalRepository} from './animalRepository'
 import {Animal2PostEntity} from '../entities/animal2Post'
+import { Animal } from '../interfaces/animal'
+import { Post } from '../interfaces/post'
+import { Mention } from '../interfaces/mention'
 
 const animalRepository = new AnimalRepository()
 const postRepository = new PostRepository()
-let animal: AnimalInterface
-let post: PostInterface
+let animal: Animal
+let post: Post
 let mentions: Mention[]
 
 describe('PostRepository', () => {
@@ -48,7 +49,6 @@ describe('PostRepository', () => {
         if (animal.id) {
             await animalRepository.delete(animal.id)
         }
-
         // Delete post
         if (post.id) {
             await postRepository.delete(post.id)

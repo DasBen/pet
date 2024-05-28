@@ -2,34 +2,6 @@ import {Entity} from 'electrodb'
 import {Config} from 'sst/node/config'
 import {DynamoDB} from '../services/dynamoDB'
 
-export interface Mention {
-    type: string
-    name: string
-    id: string
-}
-
-export interface PostInterface {
-    id?: string
-    createdAt?: number
-    updatedAt?: number
-    deleteAt?: number
-    mediaType: 'image' | 'video' | 'text'
-    mediaUrl?: string
-    text?: string
-    userId: string
-    pinned: boolean
-    mentions?: Mention[]
-}
-
-type ReadOnlyFields = 'id' | 'createdAt' | 'updatedAt'
-
-export type PostWithoutReadOnlyFields = Omit<PostInterface, ReadOnlyFields>
-
-export function removeReadOnlyFields(post: PostInterface): PostWithoutReadOnlyFields {
-    const {id, createdAt, updatedAt, ...rest} = post
-    return rest
-}
-
 export const PostEntity = new Entity(
     {
         model: {

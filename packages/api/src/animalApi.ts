@@ -1,45 +1,25 @@
 import {ApiHandler} from 'sst/node/api'
-import {AnimalInterface} from '@luna/core/entities/animal'
 import {AnimalRepository} from '@luna/core/repositories/animalRepository'
-import Joi from 'joi'
+import {z} from 'zod'
+import {Animal, AnimalPatch} from '@luna/core/interfaces/animal'
+import {animalSchema} from '@luna/core/schemas/animal'
 
 const apiRepository = new AnimalRepository()
 
 export const post = ApiHandler(async (event) => {
     // Parse the request body
-    const requestBody = <AnimalInterface>JSON.parse(event.body || '{}')
+    const requestBody = <Animal>JSON.parse(event.body || '{}')
 
     // Validate the request body
-    const schema = Joi.object({
-        type: Joi.string().required(),
-        animalType: Joi.string().required(),
-        name: Joi.string().required(),
-        profileImageUrl: Joi.string().required(),
-        bannerImageUrl: Joi.string().required(),
-        description: Joi.string(),
-        followers: Joi.number(),
-        following: Joi.number(),
-        birthday: Joi.string(),
-        monthlyFundingGoal: Joi.number(),
-        lifetimeFundingGoal: Joi.number(),
-        location: Joi.string(),
-        motherId: Joi.string(),
-        fatherId: Joi.string(),
-        siblings: Joi.array().items(Joi.string()),
-        children: Joi.array().items(Joi.string()),
-        ownerId: Joi.string(),
-        caretakerId: Joi.string(),
-        organizationId: Joi.string()
-    })
-    const {error} = schema.validate(requestBody)
-    if (error) {
-        console.error(error)
+    const validation = animalSchema.safeParse(requestBody)
+    if (!validation.success) {
+        console.error(validation.error)
         return {
             statusCode: 400,
             headers: {
                 'Content-Type': 'application/json'
             },
-            body: JSON.stringify(error)
+            body: JSON.stringify(validation.error)
         }
     }
 
@@ -60,16 +40,15 @@ export const get = ApiHandler(async (event) => {
     const id = event.pathParameters?.id
 
     // Validate the animal ID
-    const schema = Joi.string().required()
-    const {error} = schema.validate(id)
-    if (error) {
-        console.error(error)
+    const validation = animalSchema.shape.id.safeParse(id)
+    if (!validation.success) {
+        console.error(validation.error)
         return {
             statusCode: 400,
             headers: {
                 'Content-Type': 'application/json'
             },
-            body: JSON.stringify(error)
+            body: JSON.stringify(validation.error)
         }
     }
 
@@ -91,19 +70,19 @@ export const list = ApiHandler(async (event) => {
     const animalType = event.queryStringParameters?.animalType
 
     // Validate the animal type
-    const schema = Joi.object({
-        type: Joi.string(),
-        animalType: Joi.string()
+    const querySchema = z.object({
+        type: z.string().optional(),
+        animalType: z.string().optional()
     })
-    const {error} = schema.validate({type, animalType})
-    if (error) {
-        console.error(error)
+    const validation = querySchema.safeParse({type, animalType})
+    if (!validation.success) {
+        console.error(validation.error)
         return {
             statusCode: 400,
             headers: {
                 'Content-Type': 'application/json'
             },
-            body: JSON.stringify(error)
+            body: JSON.stringify(validation.error)
         }
     }
 
@@ -144,43 +123,18 @@ export const put = ApiHandler(async (event) => {
     const id = event.pathParameters?.id
 
     // Parse the request body
-    const requestBody = <AnimalInterface>JSON.parse(event.body || '{}')
+    const requestBody = <AnimalPatch>JSON.parse(event.body || '{}')
 
     // Validate the request body
-    const schema = Joi.object({
-        id: Joi.string().required(),
-        type: Joi.string().required(),
-        animalType: Joi.string().required(),
-        name: Joi.string().required(),
-        profileImageUrl: Joi.string().required(),
-        bannerImageUrl: Joi.string().required(),
-        description: Joi.string(),
-        followers: Joi.number(),
-        following: Joi.number(),
-        birthday: Joi.string(),
-        monthlyFundingGoal: Joi.number(),
-        lifetimeFundingGoal: Joi.number(),
-        location: Joi.string(),
-        motherId: Joi.string(),
-        fatherId: Joi.string(),
-        siblings: Joi.array().items(Joi.string()),
-        children: Joi.array().items(Joi.string()),
-        ownerId: Joi.string(),
-        caretakerId: Joi.string(),
-        organizationId: Joi.string(),
-        createdAt: Joi.number(),
-        updatedAt: Joi.number(),
-        deleteAt: Joi.number()
-    })
-    const {error} = schema.validate(requestBody)
-    if (error) {
-        console.error(error)
+    const validation = animalSchema.safeParse(requestBody)
+    if (!validation.success) {
+        console.error(validation.error)
         return {
             statusCode: 400,
             headers: {
                 'Content-Type': 'application/json'
             },
-            body: JSON.stringify(error)
+            body: JSON.stringify(validation.error)
         }
     }
 
@@ -201,13 +155,15 @@ export const del = ApiHandler(async (event) => {
     const id = event.pathParameters?.id
 
     // Validate the animal ID
-    const schema = Joi.string().required()
-    const {error} = schema.validate(id)
-    if (error) {
-        console.error(error)
+    const validation = animalSchema.shape.id.safeParse(id)
+    if (!validation.success) {
+        console.error(validation.error)
         return {
             statusCode: 400,
-            body: JSON.stringify(error)
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(validation.error)
         }
     }
 

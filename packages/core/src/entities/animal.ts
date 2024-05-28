@@ -1,30 +1,6 @@
 import {Entity} from 'electrodb'
 import {Config} from 'sst/node/config'
 import {DynamoDB} from '../services/dynamoDB'
-import {BaseProfile} from '../interfaces/baseProfile'
-
-export interface AnimalInterface extends BaseProfile {
-    animalType: string
-    monthlyFundingGoal?: number
-    lifetimeFundingGoal?: number
-    location?: string
-    motherId?: string
-    fatherId?: string
-    siblings?: string[]
-    children?: string[]
-    ownerId?: string
-    caretakerId?: string
-    organizationId?: string
-}
-
-type ReadOnlyFields = 'id' | 'createdAt' | 'updatedAt'
-
-export type AnimalWithoutReadOnlyFields = Omit<AnimalInterface, ReadOnlyFields>
-
-export function removeReadOnlyFields(animal: AnimalInterface): AnimalWithoutReadOnlyFields {
-    const {id, createdAt, updatedAt, ...rest} = animal
-    return rest
-}
 
 export const AnimalEntity = new Entity(
     {

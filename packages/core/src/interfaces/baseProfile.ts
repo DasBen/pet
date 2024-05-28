@@ -1,8 +1,6 @@
-export interface BaseProfile {
-    id?: string
-    createdAt?: number
-    updatedAt?: number
-    deleteAt?: number
+import {BaseSchema} from './baseSchema'
+
+export interface BaseProfile extends BaseSchema {
     type: string
     name: string
     profileImageUrl: string

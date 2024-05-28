@@ -1,4 +1,4 @@
-import {AnimalEntity, AnimalInterface, removeReadOnlyFields} from '../entities/animal'
+import {AnimalEntity} from '../entities/animal'
 import {
     DeleteQueryOptions,
     PutQueryOptions,
@@ -6,6 +6,7 @@ import {
     QueryResponse,
     UpdateQueryParams
 } from 'electrodb'
+import { Animal, removeReadOnlyFields } from '../interfaces/animal'
 
 export class AnimalRepository {
     /**
@@ -13,12 +14,12 @@ export class AnimalRepository {
      *
      * @param object Object
      * @param params PutQueryOptions (optional)
-     * @returns Promise<AnimalInterface>
+     * @returns Promise<Animal>
      * @throws Error if the Animal object already exists
      */
-    async create(object: AnimalInterface, params?: PutQueryOptions): Promise<AnimalInterface> {
+    async create(object: Animal, params?: PutQueryOptions): Promise<Animal> {
         const result = await AnimalEntity.create(object).go(params)
-        return <AnimalInterface>result.data
+        return <Animal>result.data
     }
 
     /**
@@ -27,11 +28,11 @@ export class AnimalRepository {
      *
      * @param id Animal ID
      * @param params QueryOptions (optional)
-     * @returns Promise<AnimalInterface | null>
+     * @returns Promise<Animal | null>
      */
-    async get(id: string, params?: QueryOptions): Promise<AnimalInterface | null> {
+    async get(id: string, params?: QueryOptions): Promise<Animal | null> {
         const result = await AnimalEntity.get({id}).go(params)
-        return <AnimalInterface>result.data
+        return <Animal>result.data
     }
 
     /**
@@ -39,11 +40,11 @@ export class AnimalRepository {
      *
      * @param object Object
      * @param params UpdateQueryParams (optional)
-     * @returns Promise<AnimalInterface>
+     * @returns Promise<Animal>
      */
-    async upsert(object: AnimalInterface, params?: UpdateQueryParams): Promise<AnimalInterface> {
+    async upsert(object: Animal, params?: UpdateQueryParams): Promise<Animal> {
         const result = await AnimalEntity.upsert(object).go(params)
-        return <AnimalInterface>result.data
+        return <Animal>result.data
     }
 
     /**
@@ -52,12 +53,12 @@ export class AnimalRepository {
      *
      * @param object Object
      * @param params PutQueryOptions (optional)
-     * @returns Promise<AnimalInterface>
+     * @returns Promise<Animal>
      * @throws Error if the Animal object already exists
      */
-    async put(object: AnimalInterface, params?: PutQueryOptions): Promise<AnimalInterface> {
+    async put(object: Animal, params?: PutQueryOptions): Promise<Animal> {
         const result = await AnimalEntity.put(object).go(params)
-        return <AnimalInterface>result.data
+        return <Animal>result.data
     }
 
     /**
@@ -67,15 +68,15 @@ export class AnimalRepository {
      * @param id ID
      * @param object Object
      * @param params UpdateQueryParams (optional)
-     * @returns Promise<AnimalInterface>
+     * @returns Promise<Animal>
      * @throws Error if the object does not exist
      *
      */
     async patch(
         id: string,
-        object: AnimalInterface,
+        object: Animal,
         params?: UpdateQueryParams
-    ): Promise<AnimalInterface> {
+    ): Promise<Animal> {
         // Return complete object if response is not set
         params = params || {response: 'all_new'}
 
@@ -83,7 +84,7 @@ export class AnimalRepository {
         const cleanObject = removeReadOnlyFields(object)
 
         const result = await AnimalEntity.patch({id}).set(cleanObject).go(params)
-        return <AnimalInterface>result.data
+        return <Animal>result.data
     }
 
     /**
@@ -93,13 +94,13 @@ export class AnimalRepository {
      * @param id ID
      * @param object Object
      * @param params UpdateQueryParams (optional)
-     * @returns Promise<AnimalInterface>
+     * @returns Promise<Animal>
      */
     async update(
         id: string,
-        object: AnimalInterface,
+        object: Animal,
         params?: UpdateQueryParams
-    ): Promise<Partial<AnimalInterface>> {
+    ): Promise<Partial<Animal>> {
         // Return complete object if response is not set
         params = params || {response: 'all_new'}
 
@@ -107,7 +108,7 @@ export class AnimalRepository {
         const cleanObject = removeReadOnlyFields(object)
 
         const result = await AnimalEntity.update({id}).set(cleanObject).go(params)
-        return <AnimalInterface>result.data
+        return <Animal>result.data
     }
 
     /**
@@ -196,8 +197,8 @@ export class AnimalRepository {
      * @param params QueryOptions (optional)
      * @returns Promise<QueryResponse<typeof Animal>>
      */
-    async getByName(name: string, params?: QueryOptions): Promise<AnimalInterface | null> {
+    async getByName(name: string, params?: QueryOptions): Promise<Animal | null> {
         const result = await AnimalEntity.query.byName({name}).go(params)
-        return <AnimalInterface>result.data[0]
+        return <Animal>result.data[0]
     }
 }

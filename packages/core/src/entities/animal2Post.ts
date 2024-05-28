@@ -2,11 +2,6 @@ import {Entity} from 'electrodb'
 import {Config} from 'sst/node/config'
 import {DynamoDB} from '../services/dynamoDB'
 
-export interface Animal2PostInterface {
-    animalId: string
-    postId: string
-}
-
 export const Animal2PostEntity = new Entity(
     {
         model: {

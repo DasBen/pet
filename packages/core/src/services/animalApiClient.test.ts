@@ -1,11 +1,11 @@
 import {Api} from 'sst/node/api'
-import {AnimalInterface} from '../entities/animal'
 import AnimalApiClient from './animalApiClient'
 import {afterEach, beforeEach, expect, it} from 'vitest'
 import {describe} from 'node:test'
+import { Animal } from '../interfaces/animal'
 
 const apiClient = new AnimalApiClient(Api.api.url)
-let animal: AnimalInterface
+let animal: Animal
 
 describe('AnimalApi', () => {
     beforeEach(async () => {
@@ -56,8 +56,6 @@ describe('AnimalApi', () => {
             description: newDescription
         })
 
-        console.log(updatedAnimal)
-
         expect(updatedAnimal).not.toBeUndefined()
         expect(updatedAnimal.id).toEqual(animal.id)
         expect(updatedAnimal.description).toEqual(newDescription)
@@ -69,10 +67,7 @@ describe('AnimalApi', () => {
         await apiClient.delete(animal.id!)
 
         // Get the deleted pet
-        try {
-            await apiClient.get(animal.id!)
-        } catch (e) {
-            expect(e).not.toBeUndefined()
-        }
+        const unexpectedAnimal = await apiClient.get(animal.id!)
+        expect(unexpectedAnimal).toBeNull()
     })
 })

@@ -1,10 +1,10 @@
 import {afterEach, beforeEach, expect, it} from 'vitest'
 import {AnimalRepository} from './animalRepository'
-import {AnimalInterface} from '../entities/animal'
 import {describe} from 'node:test'
+import { Animal } from '../interfaces/animal'
 
 const animalRepository = new AnimalRepository()
-let animal: AnimalInterface
+let animal: Animal
 
 describe('AnimalRepository', () => {
     beforeEach(async () => {

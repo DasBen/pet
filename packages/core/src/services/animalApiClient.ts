@@ -1,6 +1,7 @@
-import {ElectroError, ElectroValidationError, QueryResponse} from 'electrodb'
-import {AnimalEntity, AnimalInterface} from '../entities/animal'
+import {QueryResponse} from 'electrodb'
+import {AnimalEntity} from '../entities/animal'
 import {ElectroDBValidationError} from '../interfaces/electroDBValidationError'
+import {Animal} from '../interfaces/animal'
 
 class AnimalApiClient {
     private apiUrl: string
@@ -9,7 +10,7 @@ class AnimalApiClient {
         this.apiUrl = apiUrl
     }
 
-    async post(animal: AnimalInterface): Promise<AnimalInterface> {
+    async post(animal: Animal): Promise<Animal> {
         const response = await fetch(`${this.apiUrl}/animal`, {
             method: 'POST',
             headers: {
@@ -23,10 +24,10 @@ class AnimalApiClient {
             throw new Error(`Failed to create animal: ${errorJson.details[0].message}`)
         }
 
-        return (await response.json()) as AnimalInterface
+        return (await response.json()) as Animal
     }
 
-    async put(animal: AnimalInterface): Promise<AnimalInterface> {
+    async put(animal: Animal): Promise<Animal> {
         const response = await fetch(`${this.apiUrl}/animal/${animal.id}`, {
             method: 'PUT',
             headers: {
@@ -40,17 +41,17 @@ class AnimalApiClient {
             throw new Error(`Failed to update animal: ${errorJson.details[0].message}`)
         }
 
-        return (await response.json()) as AnimalInterface
+        return (await response.json()) as Animal
     }
 
-    async get(id: string): Promise<AnimalInterface> {
+    async get(id: string): Promise<Animal | null> {
         const response = await fetch(`${this.apiUrl}/animal/${id}`)
 
         if (!response.ok) {
             throw new Error('Failed to fetch animal')
         }
 
-        return (await response.json()) as AnimalInterface
+        return (await response.json()) as Animal
     }
 
     async list(request: {
@@ -82,6 +83,7 @@ class AnimalApiClient {
 
         if (!response.ok) {
             const errorJson = (await response.json()) as ElectroDBValidationError
+            console.log(errorJson)
             throw new Error(`Failed to delete animal: ${errorJson.details[0].message}`)
         }
     }
